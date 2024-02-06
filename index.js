@@ -15,6 +15,7 @@ app.use(
       "http://localhost:5174",
       "https://coffee-making-server-clint.web.app",
       "https://bistro-boss-resturant-client-side.vercel.app",
+      "https://bistro-boss-resturant.surge.sh",
     ],
     credentials: true,
   })
