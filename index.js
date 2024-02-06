@@ -8,40 +8,17 @@ const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
 const app = express();
 const port = process.env.PORT || 2000;
 
-const corsConfig = {
-  origin: [
-    "http://localhost:5173",
-    "http://localhost:5173",
-    "https://coffee-making-server-clint.web.app",
-    "https://bistro-boss-resturant-client-side.vercel.app/",
-  ],
-  credentials: true,
-  methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
-};
-app.use(cors(corsConfig));
-
-app.use((req, res, next) => {
-  // CORS headers
-  res.header(
-    "Access-Control-Allow-Origin",
-    "https://coffee-making-server-clint.web.app",
-    "https://bistro-boss-resturant-client-side.vercel.app/",
-    "http://localhost:5173",
-    "http://localhost:5173"
-  ); // restrict it to the required domain
-  res.header("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE,OPTIONS");
-  // Set custom headers for CORS
-  res.header(
-    "Access-Control-Allow-Headers",
-    "Content-type,Accept,X-Custom-Header"
-  );
-
-  if (req.method === "OPTIONS") {
-    return res.status(200).end();
-  }
-
-  return next();
-});
+app.use(
+  cors({
+    origin: [
+      "http://localhost:5173",
+      "http://localhost:5174",
+      "https://coffee-making-server-clint.web.app",
+      "https://bistro-boss-resturant-client-side.vercel.app/",
+    ],
+    credentials: true,
+  })
+);
 
 app.use(cookieParser());
 app.use(express.json());
