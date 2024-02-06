@@ -8,20 +8,6 @@ const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
 const app = express();
 const port = process.env.PORT || 2000;
 
-// app.use(
-//   cors({
-//     origin: [
-//       "http://localhost:5174",
-//       "http://localhost:5173",
-//       "https://coffee-making-server-clint.web.app",
-//       "https://coffee-making-server-clint.web.app"
-//     ],
-//     // credentials: true,
-//   })
-// );
-
-// app.use(cors())
-
 const corsConfig = {
   origin: [
     "http://localhost:5173",
@@ -58,23 +44,6 @@ app.use((req, res, next) => {
 app.use(cookieParser());
 app.use(express.json());
 
-// TOKEN VERIFY USING COOKIE
-// const verifyToken = async (req, res, next) => {
-//   const token = req.cookies?.token;
-//   if (!token) {
-//     return res.status(401).send({ message: "One Unauthorized access" });
-//   }
-//   jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, decoded) => {
-//     if (err) {
-//       console.log(err);
-//       return res.status(401).send({ message: "Tow Unauthorized access" });
-//     }
-//     console.log("Value In The Token", decoded);
-//     req.decoded = decoded;
-//     next();
-//   });
-// };
-
 // TOKEN VERIFY USING LOCALSTORAGE
 const verifyToken = async (req, res, next) => {
   console.log("console.log from here", req.headers);
@@ -103,22 +72,6 @@ const client = new MongoClient(uri, {
 
 async function run() {
   try {
-    // AUTH RELATED APIS
-
-    // post jwt using http only cookies
-    // app.post("/jwt", async (req, res) => {
-    //   const user = req.body;
-    //   const token = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, {
-    //     expiresIn: "1h",
-    //   });
-    //   res
-    //     .cookie("token", token, {
-    //       httpOnly: true,
-    //       secure: true,
-    //       sameSite: "none",
-    //     })
-    //     .send({ success: true });
-    // });
 
     // post jwt using local storage
     app.post("/jwt", async (req, res) => {
@@ -134,11 +87,6 @@ async function run() {
         })
         .send({ token });
     });
-
-    // app.get("/getCookie", async (req, res) => {
-    //   const cookie = req.cookies.token;
-    //   res.send({ cookie });
-    // });
 
     // clear cookies after logOut user
     app.post("/logOut", async (req, res) => {
@@ -424,32 +372,6 @@ async function run() {
               as: "menuItems",
             },
           },
-
-          // {
-          //   $lookup: {
-          //     from: "orderMenus",
-          //     let: { menuItemIdVar: { $toObjectId: "$menuItemIds" } },
-          //     pipeline: [
-          //       {
-          //         $match: {
-          //           $expr: {
-          //             $in: [
-          //               "$_id",
-          //               {
-          //                 $cond: {
-          //                   if: { $isArray: "$$menuItemIdVar" },
-          //                   then: "$$menuItemIdVar",
-          //                   else: ["$$menuItemIdVar"],
-          //                 },
-          //               },
-          //             ],
-          //           },
-          //         },
-          //       },
-          //     ],
-          //     as: "menuItems",
-          //   },
-          // },
           {
             $unwind: "$menuItems",
           },
@@ -472,14 +394,7 @@ async function run() {
         .toArray();
       res.send(result);
     });
-
-    // await client.connect();
-    // await client.db("admin").command({ ping: 1 });
-    // console.log(
-    //   "Pinged your deployment. You successfully connected to MongoDB!"
-    // );
   } finally {
-    // await client.close();
   }
 }
 run().catch(console.dir);
