@@ -13,6 +13,7 @@ const corsConfig = {
     "http://localhost:5173",
     "http://localhost:5173",
     "https://coffee-making-server-clint.web.app",
+    "https://bistro-boss-resturant-client-side.vercel.app/",
   ],
   credentials: true,
   methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
@@ -24,6 +25,7 @@ app.use((req, res, next) => {
   res.header(
     "Access-Control-Allow-Origin",
     "https://coffee-making-server-clint.web.app",
+    "https://bistro-boss-resturant-client-side.vercel.app/",
     "http://localhost:5173",
     "http://localhost:5173"
   ); // restrict it to the required domain
